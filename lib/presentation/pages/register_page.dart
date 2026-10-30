@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 
-class RecuperarPage extends StatefulWidget {
-  const RecuperarPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<RecuperarPage> createState() => _RecuperarPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RecuperarPageState extends State<RecuperarPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  final nombre = TextEditingController();
   final correo = TextEditingController();
+  final clave = TextEditingController();
+  final confirmar = TextEditingController();
 
   void mensaje(String texto) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(texto)));
   }
 
-  void enviar() {
-    if (correo.text.isEmpty) {
-      mensaje('Escribe tu correo');
+  void registrar() {
+    if (nombre.text.isEmpty || correo.text.isEmpty || clave.text.isEmpty) {
+      mensaje('Llena todos los campos');
     } else if (!correo.text.contains('@')) {
       mensaje('El correo no es válido');
+    } else if (clave.text != confirmar.text) {
+      mensaje('Las contraseñas no coinciden');
     } else {
-      mensaje('Te enviamos un enlace para recuperar tu contraseña');
+      mensaje('¡Registro exitoso!');
       Navigator.pushReplacementNamed(context, '/login');
     }
   }
@@ -51,21 +56,27 @@ class _RecuperarPageState extends State<RecuperarPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text(
-                    'Recuperar Contraseña',
-                    textAlign: TextAlign.center,
+                    'Crear Cuenta',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Escribe tu correo y te enviaremos un enlace.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white70),
-                  ),
                   const SizedBox(height: 20),
+                  TextField(
+                    controller: nombre,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      labelText: 'Nombre completo',
+                      labelStyle: TextStyle(color: Colors.white70),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF22D3EE)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
                   TextField(
                     controller: correo,
                     style: const TextStyle(color: Colors.white),
@@ -78,21 +89,49 @@ class _RecuperarPageState extends State<RecuperarPage> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 15),
+                  TextField(
+                    controller: clave,
+                    obscureText: true,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      labelText: 'Contraseña',
+                      labelStyle: TextStyle(color: Colors.white70),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF22D3EE)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextField(
+                    controller: confirmar,
+                    obscureText: true,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      labelText: 'Confirmar contraseña',
+                      labelStyle: TextStyle(color: Colors.white70),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF22D3EE)),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: enviar,
+                    onPressed: registrar,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF7C3AED),
                       foregroundColor: Colors.white,
                     ),
-                    child: const Text('Enviar'),
+                    child: const Text('Registrarme'),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/login');
                     },
                     child: const Text(
-                      'Volver al login',
+                      '¿Ya tienes cuenta? Inicia sesión',
                       style: TextStyle(color: Color(0xFF22D3EE)),
                     ),
                   ),
